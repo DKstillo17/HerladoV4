@@ -7,11 +7,11 @@ import newsRoutes from './routes/news.js';
 
 const app = express();
 
-app.use('/news', newsRoutes);
-
 app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
+
+app.use('/news', newsRoutes);
 
 const CONNECTION_URL = 'mongodb+srv://herladov4:herladov4@cluster0.npvpk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000;
