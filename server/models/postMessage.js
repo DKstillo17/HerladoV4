@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const newSchema = mongoose.Schema({
+const postSchema = mongoose.Schema({
     title: String,
     description: String,
     resume: String,
@@ -16,8 +16,8 @@ const newSchema = mongoose.Schema({
         type: Date,
         default: new Date()
     },
-});
+})
 
-const newMessage = mongoose.model('newMessage', newSchema);
+var PostMessage = mongoose.model('PostMessage', postSchema);
 
-export default newMessage;
+export default PostMessage;
