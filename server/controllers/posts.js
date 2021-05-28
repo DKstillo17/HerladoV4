@@ -50,7 +50,7 @@ export const getPost = async (req, res) => {
 export const createPost = async (req, res) => {
     const post = req.body;
 
-    const newPostMessage = new PostMessage({ ...post, autor: req.userId, createdAt: new Date().toISOString() })
+    const newPostMessage = new PostMessage({ ...post, createdAt: new Date().toISOString() })
 
     try {
         await newPostMessage.save();
@@ -67,7 +67,7 @@ export const updatePost = async (req, res) => {
     
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`Ningúna noticia con el id: ${id}`);
 
-    const updatedPost = { title, description, resume, category, autor, selectedFile, _id: id };
+    const updatedPost = { title, description, resume, category, autor, tags, selectedFile, _id: id };
 
     await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
 
@@ -83,29 +83,6 @@ export const deletePost = async (req, res) => {
 
     res.json({ message: "Noticia eliminada satisfactoriamente." });
 }
-
-export const likePost = async (req, res) => {
-    const { id } = req.params;
-
-    if (!req.userId) {
-        return res.json({ message: "Usuario no autenticado" });
-      }
-
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No hay noticia con el id: ${id}`);
-    
-    const post = await PostMessage.findById(id);
-
-    const index = post.likes.findIndex((id) => id ===String(req.userId));
-
-    if (index === -1) {
-      post.likes.push(req.userId);
-    } else {
-      post.likes = post.likes.filter((id) => id !== String(req.userId));
-    }
-    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
-    res.status(200).json(updatedPost);
-}
-
 
 
 export default router;
